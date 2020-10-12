@@ -7,15 +7,16 @@ export const MenuContext = React.createContext({
 });
 
 export const useIsSectionActive = (id: string) => {
-  const { sections } = React.useContext(MenuContext);
-  const activeSection = Object.keys(sections).find((sectionId) => {
-    return sections[sectionId];
-  });
+  const activeSection = useActiveSectionId();
   return id === activeSection;
-  // const isActive = !!sections[id];
-  // return isActive;
 };
 
+export const useActiveSectionId = () => {
+  const { sections } = React.useContext(MenuContext);
+  return Object.keys(sections).find((sectionId) => {
+    return sections[sectionId];
+  });
+};
 export const MenuWrapper = ({ children }: { children: React.ReactNode }) => {
   const [sections, setSections] = React.useState({});
 
@@ -70,7 +71,6 @@ type SectionProps = {
 };
 
 export const Section = ({ id, children }: SectionProps) => {
-  console.log("rendering ", id);
   const { setSectionInView } = React.useContext(MenuContext);
   const isSectionActive = useIsSectionActive(id);
 
